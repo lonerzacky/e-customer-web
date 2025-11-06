@@ -212,7 +212,7 @@
                         `/secure/tabungan/${encodeURIComponent(norek)}/mutasi?${params.toString()}`
                     );
 
-                    if (data?.responseCode !== '00') throw new Error('Gagal memuat rekening koran');
+                    if (data?.responseCode !== '00') notify('error', 'Gagal memuat rekening koran');
 
                     const r = data.responseData;
                     const mutasi = r.mutasi || [];
@@ -229,7 +229,7 @@
 
                         rows += mutasi.map((m) => `
                 <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-2">${m.tglTrans || '-'}</td>
+                    <td class="px-4 py-2">${tglIndo(m.tglTrans)|| '-'}</td>
                     <td class="px-4 py-2">${m.keterangan || '-'}</td>
                     <td class="px-4 py-2 text-right">${m.setoran ? rupiah(m.setoran) : '-'}</td>
                     <td class="px-4 py-2 text-right">${m.penarikan ? rupiah(m.penarikan) : '-'}</td>
