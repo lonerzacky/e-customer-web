@@ -20,5 +20,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->share('hidemodule', config('ecustomer.hide_module'));
+        view()->share('apiBaseUrl', env('API_BASE_URL'));
     }
 }

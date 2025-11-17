@@ -1,5 +1,5 @@
 (function () {
-    const API_BASE = 'http://localhost:8080/api';
+    const API_BASE = window.API_BASE;
     axios.defaults.baseURL = API_BASE;
 
     let isRefreshing = false;
