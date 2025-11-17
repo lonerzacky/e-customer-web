@@ -19,6 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->share('hideDashboard', config('ecustomer.hide_dashboard'));
     }
 }

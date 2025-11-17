@@ -17,6 +17,8 @@
 
 @push('scripts')
     <script>
+        const hiddenModules = @json($hideDashboard);
+
         (function () {
 
             const token = localStorage.getItem('accessToken');
@@ -27,6 +29,7 @@
             const renderCards = (d) => {
                 const cards = [
                     {
+                        key: 'tabungan',
                         title: 'Tabungan',
                         val: rupiah(d.totalTabungan),
                         sub: `${d.jumlahRekTabungan || 0} Rekening`,
@@ -36,6 +39,7 @@
                         gradient: 'from-[#F36F21]/20 to-[#FFD6B8]/10'
                     },
                     {
+                        key: 'deposito',
                         title: 'Deposito',
                         val: rupiah(d.totalDeposito),
                         sub: `${d.jumlahRekDeposito || 0} Rekening`,
@@ -45,6 +49,7 @@
                         gradient: 'from-[#10B981]/20 to-[#A7F3D0]/10'
                     },
                     {
+                        key: 'kredit',
                         title: 'Kredit',
                         val: rupiah(d.totalKredit),
                         sub: `${d.jumlahRekKredit || 0} Rekening`,
@@ -54,6 +59,7 @@
                         gradient: 'from-[#003D73]/20 to-[#9BC7F3]/10'
                     },
                     {
+                        key: 'portofolio',
                         title: 'Portofolio',
                         val: rupiah(d.totalPortofolio),
                         sub: 'Total Seluruh Produk',
@@ -64,24 +70,26 @@
                     }
                 ];
 
+                const visibleCards = cards.filter(c => !hiddenModules[c.key]);
+
                 const panel = document.getElementById('panel');
-                panel.innerHTML = cards.map(c => `
-            <a href="${c.href}"
-               class="block bg-white rounded-xl shadow p-5 border-l-4 border-[${c.color}]
-                      hover:-translate-y-1 hover:shadow-md hover:border-[#003D73]
-                      transition-all duration-200 ease-in-out">
-                <div class="flex items-center gap-4">
-                    <div class="p-3 rounded-lg bg-gradient-to-br ${c.gradient}">
-                        <i class="${c.icon}" style="font-size:28px;color:${c.color};"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm text-[#003D73]/70 font-medium">${c.title}</div>
-                        <div class="text-2xl font-bold mt-1 text-[#003D73]">${c.val}</div>
-                        <div class="text-xs text-gray-500 mt-1">${c.sub}</div>
-                    </div>
+                panel.innerHTML = visibleCards.map(c => `
+        <a href="${c.href}"
+           class="block bg-white rounded-xl shadow p-5 border-l-4 border-[${c.color}]
+                  hover:-translate-y-1 hover:shadow-md hover:border-[#003D73]
+                  transition-all duration-200 ease-in-out">
+            <div class="flex items-center gap-4">
+                <div class="p-3 rounded-lg bg-gradient-to-br ${c.gradient}">
+                    <i class="${c.icon}" style="font-size:28px;color:${c.color};"></i>
                 </div>
-            </a>
-        `).join('');
+                <div>
+                    <div class="text-sm text-[#003D73]/70 font-medium">${c.title}</div>
+                    <div class="text-2xl font-bold mt-1 text-[#003D73]">${c.val}</div>
+                    <div class="text-xs text-gray-500 mt-1">${c.sub}</div>
+                </div>
+            </div>
+        </a>
+    `).join('');
             };
 
             axios.get('/secure/dashboard')
