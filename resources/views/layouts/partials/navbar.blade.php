@@ -17,30 +17,44 @@
                         Dashboard
                     </a>
                 </li>
+
                 <li>
                     <a href="{{ route('profile') }}"
                        class="hover:text-[#F36F21] {{ request()->routeIs('profile') ? 'text-[#F36F21]' : '' }}">
                         Profil
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('tabungan.index') }}"
-                       class="hover:text-[#F36F21] {{ request()->is('rekening/tabungan*') ? 'text-[#F36F21]' : '' }}">
-                        Tabungan
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('deposito.index') }}"
-                       class="hover:text-[#F36F21] {{ request()->is('rekening/deposito*') ? 'text-[#F36F21]' : '' }}">
-                        Deposito
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('kredit.index') }}"
-                       class="hover:text-[#F36F21] {{ request()->is('rekening/kredit*') ? 'text-[#F36F21]' : '' }}">
-                        Kredit
-                    </a>
-                </li>
+
+                {{-- 🔥 TABUNGAN --}}
+                @if(!$hideDashboard['tabungan'])
+                    <li>
+                        <a href="{{ route('tabungan.index') }}"
+                           class="hover:text-[#F36F21] {{ request()->is('rekening/tabungan*') ? 'text-[#F36F21]' : '' }}">
+                            Tabungan
+                        </a>
+                    </li>
+                @endif
+
+                {{-- 🔥 DEPOSITO --}}
+                @if(!$hideDashboard['deposito'])
+                    <li>
+                        <a href="{{ route('deposito.index') }}"
+                           class="hover:text-[#F36F21] {{ request()->is('rekening/deposito*') ? 'text-[#F36F21]' : '' }}">
+                            Deposito
+                        </a>
+                    </li>
+                @endif
+
+                {{-- 🔥 KREDIT --}}
+                @if(!$hideDashboard['kredit'])
+                    <li>
+                        <a href="{{ route('kredit.index') }}"
+                           class="hover:text-[#F36F21] {{ request()->is('rekening/kredit*') ? 'text-[#F36F21]' : '' }}">
+                            Kredit
+                        </a>
+                    </li>
+                @endif
+
                 <li>
                     <button id="btnLogout" class="hover:text-[#F36F21] underline">Logout</button>
                 </li>
