@@ -64,7 +64,7 @@
                 <label for="tglAwal" class="text-xs text-gray-500 mb-1">Tgl Awal</label>
                 <input type="text" id="tglAwal"
                        class="flatpickr-input border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#003D73] focus:border-[#003D73] transition"
-                       placeholder="Pilih tanggal" />
+                       placeholder="Pilih tanggal"/>
             </div>
 
             <!-- Tgl Akhir -->
@@ -72,7 +72,7 @@
                 <label for="tglAkhir" class="text-xs text-gray-500 mb-1">Tgl Akhir</label>
                 <input type="text" id="tglAkhir"
                        class="flatpickr-input border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#003D73] focus:border-[#003D73] transition"
-                       placeholder="Pilih tanggal" />
+                       placeholder="Pilih tanggal"/>
             </div>
 
             <!-- Tipe -->
@@ -150,7 +150,7 @@
     <script>
         (async function () {
 
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 const now = new Date();
                 const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
                 const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -228,7 +228,7 @@
                     });
 
                     const {data} = await axios.get(`/secure/kredit/${encodeURIComponent(norek)}/riwayat?${params.toString()}`);
-                    if (data?.responseCode !== '00') notify('error','Gagal memuat riwayat');
+                    if (data?.responseCode !== '00') notify('error', 'Gagal memuat riwayat');
 
                     const list = data.responseData || [];
                     if (!list.length) {
@@ -283,8 +283,7 @@ Total Transaksi: <span class="font-semibold">${list.length}</span>
             function mapStatus(s) {
                 return {
                     '1': '<span class="text-green-600 font-semibold">Aktif</span>',
-                    '2': '<span class="text-yellow-600 font-semibold">Macet</span>',
-                    '3': '<span class="text-red-600 font-semibold">Lunas</span>'
+                    '2': '<span class="text-yellow-600 font-semibold">Lunas</span>',
                 }[s] || '-';
             }
         })();
