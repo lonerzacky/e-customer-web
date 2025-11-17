@@ -17,7 +17,7 @@
 
 @push('scripts')
     <script>
-        const hiddenModules = @json($hideDashboard);
+        const hiddenModules = @json($hidemodule);
 
         (function () {
 

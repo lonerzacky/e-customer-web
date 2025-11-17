@@ -26,7 +26,7 @@
                 </li>
 
                 {{-- 🔥 TABUNGAN --}}
-                @if(!$hideDashboard['tabungan'])
+                @if(!$hidemodule['tabungan'])
                     <li>
                         <a href="{{ route('tabungan.index') }}"
                            class="hover:text-[#F36F21] {{ request()->is('rekening/tabungan*') ? 'text-[#F36F21]' : '' }}">
@@ -36,7 +36,7 @@
                 @endif
 
                 {{-- 🔥 DEPOSITO --}}
-                @if(!$hideDashboard['deposito'])
+                @if(!$hidemodule['deposito'])
                     <li>
                         <a href="{{ route('deposito.index') }}"
                            class="hover:text-[#F36F21] {{ request()->is('rekening/deposito*') ? 'text-[#F36F21]' : '' }}">
@@ -46,7 +46,7 @@
                 @endif
 
                 {{-- 🔥 KREDIT --}}
-                @if(!$hideDashboard['kredit'])
+                @if(!$hidemodule['kredit'])
                     <li>
                         <a href="{{ route('kredit.index') }}"
                            class="hover:text-[#F36F21] {{ request()->is('rekening/kredit*') ? 'text-[#F36F21]' : '' }}">
