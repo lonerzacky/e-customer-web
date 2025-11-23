@@ -196,11 +196,23 @@
             btn.textContent = 'Memproses...';
 
             try {
-                const res = await axios.post(`${API_BASE}/login`, {nasabahId, password});
+                const res = await axios.post(`${API_BASE}/login`, { nasabahId, password });
                 const data = res.data?.responseData;
+
+                // Simpan token dulu
                 localStorage.setItem('accessToken', data.accessToken);
                 localStorage.setItem('refreshToken', data.refreshToken);
-                window.location.href = '/dashboard';
+
+                // FORCE ganti password jika first login
+                if (data.user?.isFirstLogin === true) {
+                    document.cookie = "is_first_login=1; path=/;";
+                    window.location.href = "/profile?forceChangePass=1";
+                    return;
+                }
+
+                document.cookie = "is_first_login=0; path=/;";
+                window.location.href = "/dashboard";
+
             } catch (err) {
                 const message =
                     err.response?.data?.responseMessage ||
@@ -211,6 +223,7 @@
                 if (code === '00') showAlert('success', message);
                 else if (code === '99') showAlert('warning', message);
                 else showAlert('error', message);
+
             } finally {
                 btn.disabled = false;
                 btn.textContent = 'Masuk';

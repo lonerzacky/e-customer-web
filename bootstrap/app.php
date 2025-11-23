@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'force.change.pass' => \App\Http\Middleware\ForceChangePassword::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

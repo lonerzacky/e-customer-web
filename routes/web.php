@@ -17,22 +17,24 @@ Route::get('/logout', function () {
 })->name('logout');
 
 
-Route::prefix('/')->group(function () {
-    Route::view('/dashboard', 'dashboard.index')->name('dashboard');
-    Route::view('/profile', 'profile.index')->name('profile');
+Route::middleware('force.change.pass')->group(function () {
+    Route::prefix('/')->group(function () {
+        Route::view('/dashboard', 'dashboard.index')->name('dashboard');
+        Route::view('/profile', 'profile.index')->name('profile');
 
-    Route::prefix('rekening/tabungan')->group(function () {
-        Route::view('/', 'rekening.tabungan.index')->name('tabungan.index');           // daftar
-        Route::view('/detail', 'rekening.tabungan.detail')->name('tabungan.detail');   // detail?norek=
-    });
+        Route::prefix('rekening/tabungan')->group(function () {
+            Route::view('/', 'rekening.tabungan.index')->name('tabungan.index');           // daftar
+            Route::view('/detail', 'rekening.tabungan.detail')->name('tabungan.detail');   // detail?norek=
+        });
 
-    Route::prefix('rekening/deposito')->group(function () {
-        Route::view('/', 'rekening.deposito.index')->name('deposito.index');
-        Route::view('/detail', 'rekening.deposito.detail')->name('deposito.detail');
-    });
+        Route::prefix('rekening/deposito')->group(function () {
+            Route::view('/', 'rekening.deposito.index')->name('deposito.index');
+            Route::view('/detail', 'rekening.deposito.detail')->name('deposito.detail');
+        });
 
-    Route::prefix('rekening/kredit')->group(function () {
-        Route::view('/', 'rekening.kredit.index')->name('kredit.index');
-        Route::view('/detail', 'rekening.kredit.detail')->name('kredit.detail');
+        Route::prefix('rekening/kredit')->group(function () {
+            Route::view('/', 'rekening.kredit.index')->name('kredit.index');
+            Route::view('/detail', 'rekening.kredit.detail')->name('kredit.detail');
+        });
     });
 });

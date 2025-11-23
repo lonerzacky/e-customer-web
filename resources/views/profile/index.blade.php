@@ -3,7 +3,9 @@
 @section('title', 'Profil Nasabah | '.config('app.name'))
 
 @section('content')
-    <div x-data="{ showChangePass: false }">
+    <div id="profilePage"
+         x-data="{ showChangePass: false }"
+         @force-open-change-pass.window="showChangePass = true">
         <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-2">
                 <i class="ki-outline ki-user text-[#F36F21] text-2xl"></i>
@@ -148,6 +150,15 @@
 
         )();
 
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.get('forceChangePass') === '1') {
+                window.dispatchEvent(new CustomEvent('force-open-change-pass'));
+                window.dispatchEvent(new CustomEvent('force-open-change-pass'));
+            }
+        });
         document.getElementById('formChangePassword').addEventListener('submit', async (e) => {
             e.preventDefault();
             const oldPassword = document.getElementById('oldPassword').value;
@@ -172,7 +183,7 @@
                     localStorage.removeItem('accessToken');
                     localStorage.removeItem('refreshToken');
                     document.cookie = "jwt_exists=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
-
+                    document.cookie = "is_first_login=0; path=/;";
                     setTimeout(() => {
                         window.location.href = '/login';
                     }, 1500);
@@ -190,5 +201,7 @@
                 notify("error", msg);
             }
         });
+
+
     </script>
 @endpush

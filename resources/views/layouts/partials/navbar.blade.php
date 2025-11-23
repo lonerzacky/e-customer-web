@@ -86,13 +86,49 @@
 
 {{-- Logout --}}
 <script>
-    function doLogout(){
-        try { axios.post('/logout'); } catch(_) {}
+    const firstLogin = document.cookie.includes("is_first_login=1");
+
+    if (firstLogin) {
+        document.querySelectorAll('a').forEach(link => {
+            const href = link.getAttribute('href');
+
+            if (!href) return;
+            if (href === "/profile") return;
+            if (href.startsWith("/profile?")) return;
+
+            link.addEventListener('click', e => {
+                e.preventDefault();
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Wajib Ganti Password',
+                    text: 'Anda harus mengganti password terlebih dahulu sebelum mengakses menu lain.',
+                    confirmButtonColor: '#003D73',
+                    confirmButtonText: 'Ganti Password Sekarang'
+                }).then(() => {
+                    // Trigger event Alpine
+                    window.dispatchEvent(new CustomEvent('force-open-change-pass'));
+
+                    if (!window.location.search.includes('forceChangePass=1')) {
+                        window.location.href = "/profile?forceChangePass=1";
+                    }
+                });
+            });
+        });
+    }
+
+    function doLogout() {
+        try {
+            axios.post('/logout');
+        } catch (_) {
+        }
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         document.cookie = "jwt_exists=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+        document.cookie = "is_first_login=0;path=/;";
         window.location.href = '/login';
     }
+
     document.getElementById('btnLogout')?.addEventListener('click', doLogout);
     document.getElementById('btnLogoutMobile')?.addEventListener('click', doLogout);
 </script>
