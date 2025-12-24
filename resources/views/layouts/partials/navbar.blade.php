@@ -75,9 +75,15 @@
         <div class="px-4 pb-4 space-y-2 font-medium">
             <a href="{{ route('dashboard') }}" class="block py-2 hover:text-[#F36F21]">Dashboard</a>
             <a href="{{ route('profile') }}" class="block py-2 hover:text-[#F36F21]">Profil</a>
-            <a href="{{ route('tabungan.index') }}" class="block py-2 hover:text-[#F36F21]">Tabungan</a>
-            <a href="{{ route('deposito.index') }}" class="block py-2 hover:text-[#F36F21]">Deposito</a>
-            <a href="{{ route('kredit.index') }}" class="block py-2 hover:text-[#F36F21]">Kredit</a>
+            @if(!$hidemodule['tabungan'])
+                <a href="{{ route('tabungan.index') }}" class="block py-2 hover:text-[#F36F21]">Tabungan</a>
+            @endif
+            @if(!$hidemodule['deposito'])
+                <a href="{{ route('deposito.index') }}" class="block py-2 hover:text-[#F36F21]">Deposito</a>
+            @endif
+            @if(!$hidemodule['kredit'])
+                <a href="{{ route('kredit.index') }}" class="block py-2 hover:text-[#F36F21]">Kredit</a>
+            @endif
             <button id="btnLogoutMobile" class="underline mt-2 hover:text-[#F36F21]">Logout</button>
         </div>
     </div>
