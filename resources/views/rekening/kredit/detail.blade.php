@@ -97,36 +97,39 @@
             </div>
         </div>
         <div class="overflow-x-auto border rounded-lg">
-            <table class="min-w-full text-sm border-collapse">
-                <thead class="bg-[#003D73] text-white">
-                <tr>
-                    <th rowspan="2" class="px-3 py-2 text-left">No</th>
-                    <th rowspan="2" class="px-3 py-2 text-left">Tgl Trans</th>
-                    <th rowspan="2" class="px-3 py-2 text-left">Uraian</th>
-                    <th rowspan="2" class="px-3 py-2 text-center">Kode</th>
-                    <th rowspan="2" class="px-3 py-2 text-right">Dropping/<br>Realisasi</th>
-                    <th colspan="2" class="px-3 py-2 text-center">Tagihan / Jadwal Pembayaran</th>
-                    <th colspan="3" class="px-3 py-2 text-center">Angsuran</th>
-                    <th rowspan="2" class="px-3 py-2 text-right">Total<br>Angsuran</th>
-                    <th rowspan="2" class="px-3 py-2 text-right">Baki<br>Debet</th>
-                    <th colspan="2" class="px-3 py-2 text-center">Tunggakan</th>
-                </tr>
-                <tr>
-                    <th class="px-3 py-1 text-right">Pokok</th>
-                    <th class="px-3 py-1 text-right">Bunga</th>
-                    <th class="px-3 py-1 text-right">Pokok</th>
-                    <th class="px-3 py-1 text-right">Bunga</th>
-                    <th class="px-3 py-1 text-right">Denda</th>
-                    <th class="px-3 py-1 text-right">Pokok</th>
-                    <th class="px-3 py-1 text-right">Bunga</th>
-                </tr>
-                </thead>
-                <tbody id="tbodyRiwayat" class="divide-y divide-gray-100 bg-white text-gray-700">
-                <tr>
-                    <td colspan="14" class="text-center py-3 text-gray-400">Belum ada data</td>
-                </tr>
-                </tbody>
-            </table>
+            <div id="riwayatTableContainer" class="hidden md:block overflow-x-auto border rounded-lg">
+                <table class="min-w-full text-sm border-collapse">
+                    <thead class="bg-[#003D73] text-white">
+                    <tr>
+                        <th rowspan="2" class="px-3 py-2 text-left">No</th>
+                        <th rowspan="2" class="px-3 py-2 text-left">Tgl Trans</th>
+                        <th rowspan="2" class="px-3 py-2 text-left">Uraian</th>
+                        <th rowspan="2" class="px-3 py-2 text-center">Kode</th>
+                        <th rowspan="2" class="px-3 py-2 text-right">Dropping/<br>Realisasi</th>
+                        <th colspan="2" class="px-3 py-2 text-center">Tagihan / Jadwal Pembayaran</th>
+                        <th colspan="3" class="px-3 py-2 text-center">Angsuran</th>
+                        <th rowspan="2" class="px-3 py-2 text-right">Total<br>Angsuran</th>
+                        <th rowspan="2" class="px-3 py-2 text-right">Baki<br>Debet</th>
+                        <th colspan="2" class="px-3 py-2 text-center">Tunggakan</th>
+                    </tr>
+                    <tr>
+                        <th class="px-3 py-1 text-right">Pokok</th>
+                        <th class="px-3 py-1 text-right">Bunga</th>
+                        <th class="px-3 py-1 text-right">Pokok</th>
+                        <th class="px-3 py-1 text-right">Bunga</th>
+                        <th class="px-3 py-1 text-right">Denda</th>
+                        <th class="px-3 py-1 text-right">Pokok</th>
+                        <th class="px-3 py-1 text-right">Bunga</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbodyRiwayat" class="divide-y divide-gray-100 bg-white text-gray-700">
+                    <tr>
+                        <td colspan="14" class="text-center py-3 text-gray-400">Belum ada data</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="riwayatCardContainer" class="block md:hidden space-y-4"></div>
         </div>
         <div id="footerRiwayat" class="text-sm text-gray-500 mt-2"></div>
     </div>
@@ -215,6 +218,7 @@
                 const tglAwal = document.getElementById('tglAwal').value;
                 const tglAkhir = document.getElementById('tglAkhir').value;
                 const type = document.getElementById('typeRiwayat').value;
+                const cardContainer = document.getElementById('riwayatCardContainer');
                 if (!tglAwal || !tglAkhir) return alert('Isi tanggal awal dan akhir');
 
                 tbody.innerHTML = `<tr><td colspan="7" class="text-center py-3 text-gray-400">Memuat data...</td></tr>`;
@@ -263,11 +267,61 @@
 </tr>
 `).join('');
 
+                    cardContainer.innerHTML = list.map((r, i) => `
+<div class="bg-white rounded-xl shadow border-l-4 border-[#F36F21] p-4">
+    <div class="flex justify-between items-start mb-2">
+        <div>
+            <p class="text-xs text-gray-500">Tanggal</p>
+            <p class="font-semibold">${tglIndo(r.tglTrans)}</p>
+        </div>
+        <span class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700">
+            ${r.myKodeTrans || '-'}
+        </span>
+    </div>
+
+    <p class="text-sm text-gray-500">Uraian</p>
+    <p class="font-medium mb-2">${r.keterangan || '-'}</p>
+
+    <div class="grid grid-cols-2 gap-3 text-sm mb-3">
+        <div>
+            <p class="text-gray-500">Realisasi</p>
+            <p class="font-semibold">${rupiah(r.realisasi)}</p>
+        </div>
+        <div>
+            <p class="text-gray-500">Total Angsuran</p>
+            <p class="font-semibold">${rupiah(r.totalAngsuran)}</p>
+        </div>
+        <div>
+            <p class="text-gray-500">Baki Debet</p>
+            <p class="font-semibold">${rupiah(r.bakiDebet)}</p>
+        </div>
+        <div>
+            <p class="text-gray-500">Denda</p>
+            <p class="font-semibold">${rupiah(r.angsuranDenda)}</p>
+        </div>
+    </div>
+
+    <details class="text-sm">
+        <summary class="cursor-pointer text-[#003D73] font-medium">
+            Detail Angsuran
+        </summary>
+        <div class="mt-2 grid grid-cols-2 gap-2 text-xs">
+            <div>Pokok: <b>${rupiah(r.angsuranPokok)}</b></div>
+            <div>Bunga: <b>${rupiah(r.angsuranBunga)}</b></div>
+            <div>Tunggakan Pokok: <b>${rupiah(r.tunggakanPokok)}</b></div>
+            <div>Tunggakan Bunga: <b>${rupiah(r.tunggakanBunga)}</b></div>
+        </div>
+    </details>
+</div>
+`).join('');
+
                     footer.innerHTML = `
 Saldo Awal: <span class="font-semibold">${rupiah(list[0]?.realisasi || 0)}</span> |
 Saldo Akhir: <span class="font-semibold">${rupiah(list[list.length - 1]?.bakiDebet || 0)}</span> |
 Total Transaksi: <span class="font-semibold">${list.length}</span>
 `;
+
+
 
                 } catch (err) {
                     console.error(err);
