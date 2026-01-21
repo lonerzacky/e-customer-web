@@ -22,8 +22,6 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->share('hidemodule', config('ecustomer.hide_module'));
         view()->share('apiBaseUrl', env('API_BASE_URL'));
-        if (app()->environment('production')) {
-            URL::forceScheme('https');
-        }
+        URL::forceScheme('https');
     }
 }
