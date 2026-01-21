@@ -138,3 +138,4 @@
     document.getElementById('btnLogout')?.addEventListener('click', doLogout);
     document.getElementById('btnLogoutMobile')?.addEventListener('click', doLogout);
 </script>
+
