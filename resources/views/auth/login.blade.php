@@ -115,13 +115,38 @@
 
             <div>
                 <label class="block text-sm font-medium mb-1">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-[#F37021] focus:border-[#F37021]"
-                    placeholder="Masukkan Password"
-                />
+                <div class="relative">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="w-full border border-slate-300 rounded-lg p-2 pr-10 focus:ring-2 focus:ring-[#F37021] focus:border-[#F37021]"
+                        placeholder="Masukkan Password"
+                    />
+                    <button
+                        type="button"
+                        id="togglePassword"
+                        aria-label="Tampilkan password"
+                        class="absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                    >
+                        <!-- eye (password tersembunyi) -->
+                        <svg id="eyeShow" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <!-- eye-off (password terlihat) -->
+                        <svg id="eyeHide" class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                            <line x1="2" x2="22" y1="2" y2="22"></line>
+                        </svg>
+                    </button>
+                </div>
                 <p class="text-xs text-red-600 mt-1 hidden" id="errPassword"></p>
             </div>
 
@@ -161,6 +186,19 @@
         const btn = document.getElementById('btnLogin');
         const errMsg = document.getElementById('errorMessage');
         const API_BASE = window.ENV?.API_BASE_URL || 'http://localhost:8080/api';
+
+        // Toggle tampil/sembunyi password
+        const passwordInput = document.getElementById('password');
+        const toggleBtn = document.getElementById('togglePassword');
+        const eyeShow = document.getElementById('eyeShow');
+        const eyeHide = document.getElementById('eyeHide');
+        toggleBtn.addEventListener('click', () => {
+            const isHidden = passwordInput.type === 'password';
+            passwordInput.type = isHidden ? 'text' : 'password';
+            eyeShow.classList.toggle('hidden', isHidden);
+            eyeHide.classList.toggle('hidden', !isHidden);
+            toggleBtn.setAttribute('aria-label', isHidden ? 'Sembunyikan password' : 'Tampilkan password');
+        });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
