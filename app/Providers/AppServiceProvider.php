@@ -22,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->share('hidemodule', config('ecustomer.hide_module'));
         view()->share('apiBaseUrl', env('API_BASE_URL'));
-        URL::forceScheme('https');
+
+        if (filter_var(env('FORCE_HTTPS', true), FILTER_VALIDATE_BOOLEAN)) {
+            URL::forceScheme('https');
+        }
     }
 }
