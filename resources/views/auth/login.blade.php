@@ -159,6 +159,13 @@
             </button>
         </form>
 
+        <div class="text-center mt-3">
+            <button type="button" id="btnForgot"
+                    class="text-sm text-[var(--secondary)] hover:text-[#F37021] underline">
+                Lupa password?
+            </button>
+        </div>
+
         <div
             id="errorMessage"
             class="hidden rounded-lg border border-red-300 bg-red-50 p-3 text-red-700 mt-4 flex items-center justify-between"
@@ -172,6 +179,44 @@
         <p class="text-xs text-slate-400 text-center mt-8">
             © {{ date('Y') }} {{config('ecustomer.companyName')}}<br>
         </p>
+    </div>
+</div>
+
+<!-- Modal Lupa Password -->
+<div id="forgotModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <h3 class="text-lg font-bold text-[var(--secondary)]">Lupa Password</h3>
+                <p class="text-sm text-slate-500">Masukkan ID Nasabah Anda. Permintaan reset akan
+                    dikirim ke admin untuk diproses.</p>
+            </div>
+            <button type="button" id="btnForgotClose" class="text-slate-400 hover:text-slate-600">✕</button>
+        </div>
+
+        <div id="forgotAlert" class="kt-alert hidden mb-4 flex items-center gap-2 rounded-lg border p-3">
+            <div class="kt-alert-title flex-1">&nbsp;</div>
+        </div>
+
+        <form id="forgotForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">Nasabah ID</label>
+                <input type="text" id="forgotNasabahId" name="forgotNasabahId"
+                       class="w-full border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-[#F37021] focus:border-[#F37021]"
+                       placeholder="Masukkan ID Nasabah"/>
+                <p class="text-xs text-red-600 mt-1 hidden" id="errForgotNasabahId"></p>
+            </div>
+            <div class="flex gap-2">
+                <button type="button" id="btnForgotCancel"
+                        class="flex-1 py-2.5 rounded-lg border border-slate-300 text-slate-600 font-semibold hover:bg-slate-50 transition">
+                    Batal
+                </button>
+                <button type="submit" id="btnForgotSubmit"
+                        class="flex-1 py-2.5 rounded-lg bg-[#F37021] text-white font-semibold hover:bg-[#E65D0F] transition">
+                    Kirim Permintaan
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -275,6 +320,75 @@
             err.textContent = message;
             err.classList.remove('hidden');
         }
+
+        // ===== Lupa Password =====
+        const forgotModal = document.getElementById('forgotModal');
+        const forgotForm = document.getElementById('forgotForm');
+        const forgotInput = document.getElementById('forgotNasabahId');
+        const forgotErr = document.getElementById('errForgotNasabahId');
+        const forgotSubmit = document.getElementById('btnForgotSubmit');
+        const forgotAlert = document.getElementById('forgotAlert');
+
+        function openForgot() {
+            forgotModal.classList.remove('hidden');
+            forgotErr.classList.add('hidden');
+            forgotAlert.classList.add('hidden');
+            forgotInput.value = '';
+            setTimeout(() => forgotInput.focus(), 50);
+        }
+
+        function closeForgot() {
+            forgotModal.classList.add('hidden');
+        }
+
+        function showForgotAlert(type, message) {
+            forgotAlert.classList.remove('kt-alert-success', 'kt-alert-warning', 'kt-alert-error', 'hidden');
+            forgotAlert.classList.add(type === 'success' ? 'kt-alert-success'
+                : (type === 'warning' ? 'kt-alert-warning' : 'kt-alert-error'));
+            forgotAlert.querySelector('.kt-alert-title').textContent = message;
+        }
+
+        document.getElementById('btnForgot').addEventListener('click', openForgot);
+        document.getElementById('btnForgotClose').addEventListener('click', closeForgot);
+        document.getElementById('btnForgotCancel').addEventListener('click', closeForgot);
+        forgotModal.addEventListener('click', (e) => {
+            if (e.target === forgotModal) closeForgot();
+        });
+
+        forgotForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            forgotErr.classList.add('hidden');
+            forgotAlert.classList.add('hidden');
+            forgotInput.classList.remove('border-red-500');
+
+            const nasabahId = forgotInput.value.trim();
+            if (nasabahId === '') {
+                forgotInput.classList.add('border-red-500');
+                forgotErr.textContent = 'ID Nasabah wajib diisi';
+                forgotErr.classList.remove('hidden');
+                return;
+            }
+
+            forgotSubmit.disabled = true;
+            forgotSubmit.textContent = 'Memproses...';
+
+            try {
+                const res = await axios.post(`${API_BASE}/forgot-password`, { nasabahId });
+                const message = res.data?.responseMessage
+                    || 'Permintaan reset dikirim ke admin. Silakan hubungi/menunggu admin.';
+                showForgotAlert('success', message);
+                forgotForm.reset();
+            } catch (err) {
+                const message =
+                    err.response?.data?.responseMessage ||
+                    err.message ||
+                    'Gagal mengirim permintaan. Coba lagi.';
+                showForgotAlert('error', message);
+            } finally {
+                forgotSubmit.disabled = false;
+                forgotSubmit.textContent = 'Kirim Permintaan';
+            }
+        });
 
         function showAlert(type = 'error', message = 'Terjadi kesalahan.') {
             const box = document.getElementById('errorMessage');

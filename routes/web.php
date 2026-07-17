@@ -17,6 +17,12 @@ Route::get('/logout', function () {
 })->name('logout');
 
 
+// ===== Admin (auth & data via API + JWT, guard client-side) =====
+Route::get('/admin', fn() => redirect('/admin/reset-requests'));
+Route::view('/admin/login', 'admin.login')->name('admin.login');
+Route::view('/admin/reset-requests', 'admin.reset-requests')->name('admin.reset-requests');
+
+
 Route::middleware('force.change.pass')->group(function () {
     Route::prefix('/')->group(function () {
         Route::view('/dashboard', 'dashboard.index')->name('dashboard');
