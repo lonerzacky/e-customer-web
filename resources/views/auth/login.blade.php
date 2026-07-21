@@ -9,6 +9,7 @@
     <script src="{{asset('theme/assets/vendors/ktui/ktui.min.js')}}"></script>
     <script src="{{asset('theme/assets/js/core.bundle.js')}}"></script>
     <script src="{{asset('js/axios.min.js')}}"></script>
+    <script src="{{asset('js/password-toggle.js')}}"></script>
     <style>
         :root {
             --primary: #F37021;
@@ -126,18 +127,19 @@
                     <button
                         type="button"
                         id="togglePassword"
+                        data-toggle-password
                         aria-label="Tampilkan password"
                         class="absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 hover:text-slate-600 focus:outline-none"
                     >
                         <!-- eye (password tersembunyi) -->
-                        <svg id="eyeShow" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        <svg data-eye-show xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>
                         <!-- eye-off (password terlihat) -->
-                        <svg id="eyeHide" class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        <svg data-eye-hide class="hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                              viewBox="0 0 24 24" fill="none" stroke="currentColor"
                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
@@ -232,18 +234,8 @@
         const errMsg = document.getElementById('errorMessage');
         const API_BASE = window.ENV?.API_BASE_URL || 'http://localhost:8080/api';
 
-        // Toggle tampil/sembunyi password
-        const passwordInput = document.getElementById('password');
-        const toggleBtn = document.getElementById('togglePassword');
-        const eyeShow = document.getElementById('eyeShow');
-        const eyeHide = document.getElementById('eyeHide');
-        toggleBtn.addEventListener('click', () => {
-            const isHidden = passwordInput.type === 'password';
-            passwordInput.type = isHidden ? 'text' : 'password';
-            eyeShow.classList.toggle('hidden', isHidden);
-            eyeHide.classList.toggle('hidden', !isHidden);
-            toggleBtn.setAttribute('aria-label', isHidden ? 'Sembunyikan password' : 'Tampilkan password');
-        });
+        // Toggle tampil/sembunyi password ditangani oleh js/password-toggle.js
+        // (lewat atribut data-toggle-password / data-eye-show / data-eye-hide).
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();

@@ -48,18 +48,36 @@
                 <form id="formChangePassword" class="space-y-3">
                     <div>
                         <label class="text-gray-600">Password Lama</label>
-                        <input type="password" id="oldPassword"
-                               class="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-[#003D73]" required/>
+                        <div class="relative">
+                            <input type="password" id="oldPassword"
+                                   class="border rounded-lg px-3 py-2 pr-10 w-full text-base focus:ring-2 focus:ring-[#003D73]" required/>
+                            <button type="button" data-toggle-password aria-label="Lihat password"
+                                    class="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-gray-600">
+                                <i class="ki-solid ki-eye text-xl"></i>
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <label class="text-gray-600">Password Baru</label>
-                        <input type="password" id="newPassword"
-                               class="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-[#003D73]" required/>
+                        <div class="relative">
+                            <input type="password" id="newPassword"
+                                   class="border rounded-lg px-3 py-2 pr-10 w-full text-base focus:ring-2 focus:ring-[#003D73]" required/>
+                            <button type="button" data-toggle-password aria-label="Lihat password"
+                                    class="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-gray-600">
+                                <i class="ki-solid ki-eye text-xl"></i>
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <label class="text-gray-600">Konfirmasi Password Baru</label>
-                        <input type="password" id="confirmPassword"
-                               class="border rounded-lg px-3 py-2 w-full focus:ring-2 focus:ring-[#003D73]" required/>
+                        <div class="relative">
+                            <input type="password" id="confirmPassword"
+                                   class="border rounded-lg px-3 py-2 pr-10 w-full text-base focus:ring-2 focus:ring-[#003D73]" required/>
+                            <button type="button" data-toggle-password aria-label="Lihat password"
+                                    class="absolute inset-y-0 right-2 flex items-center text-gray-400 hover:text-gray-600">
+                                <i class="ki-solid ki-eye text-xl"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="flex justify-end gap-2 pt-4">

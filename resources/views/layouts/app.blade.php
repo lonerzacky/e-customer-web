@@ -23,6 +23,7 @@
     <script src="{{ asset('js/app-axios.js') }}"></script>
     <script src="{{ asset('js/page-helpers.js') }}"></script>
     <script src="{{ asset('js/utils.js') }}"></script>
+    <script src="{{ asset('js/password-toggle.js') }}"></script>
 
 </head>
 <body class="bg-[#F9FAFB] text-[#003D73]">
